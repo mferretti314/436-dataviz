@@ -6,33 +6,93 @@ import plotly.express as plx
 import pandas as pd
 
 
-
 # TO-DO:
-#   -combine figures into one [may require switching to plotly [not plotly express]]
-#   -adjust color scales [different colors + possibly logarithmic scale]
-#   -finalize layout [different projection? / multiple views to compare different times (2 of each data - 6 total)]
+#   -seperate and adjust color scales [different colors + possibly logarithmic scale]
+#   -finalize layout [different projection? / Switch to horizontal instead of vertical?]
 
 
-# Define entire figure to contain/arrange subplots
+# Define overall figure, including type and layout of subplots
 figure = make_subplots(rows=3, cols=1, specs=[[{'type': 'choropleth'}],[{'type': 'choropleth'}],[{'type': 'choropleth'}]], subplot_titles=('CO2 Total by [YEAR]','CO2 in [YEAR]', 'Disasters in [YEAR]'))
 
-# Read in data from files
+# Read in all data from csv files
 all_data = pd.read_csv('co2_cumulative_data.csv')
 annual_data = pd.read_csv('co2_annual_data.csv')
 disaster_data = pd.read_csv('vis_disaster_total_data.csv')
 
+# add first trace to figure [trace 0]
+figure.add_trace(go.Choropleth(locations=all_data['iso_code'], z=all_data['1980'], colorscale='deep'), row=1, col=1)
 
-# Add the desired traces to the figure
-figure.add_trace(go.Choropleth(locations=all_data['iso_code'], z=all_data['2022'], colorscale='deep' ), row=1, col=1)
-figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data['2022'], colorscale='Greys' ), row=2, col=1)
-figure.add_trace(go.Choropleth(locations=disaster_data['ISO3'], z=disaster_data['F2022'], colorscale='Reds'), row=3, col=1)
+# add first trace to figure [trace 1]
+figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data['1980'], colorscale='Greys' ), row=2, col=1)
+
+# add first trace to figure [trace 2]
+figure.add_trace(go.Choropleth(locations=disaster_data['ISO3'], z=disaster_data['F1980'], colorscale='Reds' ), row=3, col=1)
 
 
-# Change the layout of the figure to include title
-figure.update_layout(title_text='Global CO2 Emissions and Climate-Related Disasters')
+# start year = 1750 [currently using 1980, will need to fix charts/adjust data later]
+# end year = 2022
 
 
+# iterate over each subplot and create an updated frame for each year
+# (currently defines frames 1980-2022 since disaster data does not go back as far as the other data)
+frames = [go.Frame(name=year,
+                data=[go.Choropleth(z=all_data[str(year)], colorscale='deep' ),
+                    go.Choropleth(z=annual_data[str(year)], colorscale='Greys'),
+                    go.Choropleth(z=disaster_data["".join(['F',str(year)])], colorscale='Reds')],
+                traces=[0,1,2]) for year in range(1980, 2022)]
+
+# Parameters to define function of button
+updatemenus = [dict(type='buttons',
+                    buttons=[dict(label='Play', method='animate', args=[None, dict(frame=dict(duration=2, redraw=True), transition=dict(duration=1), mode='immediate')])],
+                    direction= 'left')
+            ]
+
+# Parameters to customize slider text, position, and function
+sliders = [{'xanchor': 'left', 
+            'currentvalue': 
+            {
+            'font': {'size': 16},
+            'prefix': 'Year: ',
+            'visible': True,
+            'xanchor': 'center'
+            },
+            'transition': {'duration': 5.0},
+            'steps': 
+            [
+            {'args': [[year], {'frame': {'duration': 2.0,  'redraw': True},'transition': {'duration': 0}}], 
+            'label': year, 
+            'method': 'animate'} for year in range(1980, 2022)       
+            ]
+            }]
+
+
+
+
+# Add frames and button/slider to figure
+figure.frames = frames
+
+# Alternative way to assign frames to figure
+#figure.update(frames=frames)
+
+
+figure.update_layout(updatemenus=updatemenus,sliders=sliders)
+
+
+
+
+
+
+
+# Render figure
 figure.show()
+
+
+
+
+
+
+#----------------------------------------------------------------------------------------------------------
+
 
 
 
