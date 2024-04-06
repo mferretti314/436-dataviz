@@ -12,7 +12,7 @@ import pandas as pd
 
 
 # Define overall figure, including type and layout of subplots
-figure = make_subplots(rows=3, cols=1, specs=[[{'type': 'choropleth'}],[{'type': 'choropleth'}],[{'type': 'choropleth'}]], subplot_titles=('CO2 Total by [YEAR]','CO2 in [YEAR]', 'Disasters in [YEAR]'))
+figure = make_subplots(rows=3, cols=1, specs=[[{'type': 'choropleth'}],[{'type': 'choropleth'}],[{'type': 'choropleth'}]], subplot_titles=('Cumulative CO2 Emitted','CO2 Emitted This Year', 'Climate Disasters This Year'))
 
 # Read in all data from csv files
 all_data = pd.read_csv('co2_cumulative_data.csv')
@@ -28,18 +28,24 @@ figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data[
 # add first trace to figure [trace 2]
 figure.add_trace(go.Choropleth(locations=disaster_data['ISO3'], z=disaster_data['F1980'], colorscale='Reds' ), row=3, col=1)
 
-
+figure.data[0].colorbar.x=0.9
+figure.data[1].colorbar.x=1.0
+figure.data[2].colorbar.x=1.1
 # start year = 1750 [currently using 1980, will need to fix charts/adjust data later]
 # end year = 2022
 
 
 # iterate over each subplot and create an updated frame for each year
 # (currently defines frames 1980-2022 since disaster data does not go back as far as the other data)
-frames = [go.Frame(name=year,
-                data=[go.Choropleth(z=all_data[str(year)], colorscale='deep' ),
+frames = [go.Frame(
+                name=year,
+                data=[
+                    go.Choropleth(z=all_data[str(year)], colorscale='deep'),
                     go.Choropleth(z=annual_data[str(year)], colorscale='Greys'),
-                    go.Choropleth(z=disaster_data["".join(['F',str(year)])], colorscale='Reds')],
-                traces=[0,1,2]) for year in range(1980, 2022)]
+                    go.Choropleth(z=disaster_data["".join(['F',str(year)])], colorscale='Reds')
+                ],
+                traces=[0,1,2]
+            ) for year in range(1980, 2022)]
 
 # Parameters to define function of button
 updatemenus = [dict(type='buttons',
