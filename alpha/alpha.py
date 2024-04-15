@@ -8,7 +8,7 @@ import pandas as pd
 
 # TO-DO:
 #   -seperate and adjust color scales [different colors + possibly logarithmic scale]
-#   -finalize layout [different projection? / Switch to horizontal instead of vertical?]
+#   -finalize layout [small multiples/ 6 total views]
 
 
 # Define overall figure, including type and layout of subplots
@@ -20,13 +20,13 @@ annual_data = pd.read_csv('co2_annual_data.csv')
 disaster_data = pd.read_csv('vis_disaster_total_data.csv')
 
 # add first trace to figure [trace 0]
-figure.add_trace(go.Choropleth(locations=all_data['iso_code'], z=all_data['1980'], colorscale='deep'), row=1, col=1)
+figure.add_trace(go.Choropleth(locations=all_data['iso_code'], z=all_data['1960'], colorscale='deep'), row=1, col=1)
 
 # add first trace to figure [trace 1]
-figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data['1980'], colorscale='Greys' ), row=2, col=1)
+figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data['1960'], colorscale='Greys' ), row=2, col=1)
 
 # add first trace to figure [trace 2]
-figure.add_trace(go.Choropleth(locations=disaster_data['ISO3'], z=disaster_data['F1980'], colorscale='Reds' ), row=3, col=1)
+figure.add_trace(go.Choropleth(locations=disaster_data['ISO3'], z=disaster_data['F1960'], colorscale='Reds' ), row=3, col=1)
 
 figure.data[0].colorbar.x=0.9
 figure.data[1].colorbar.x=1.0
@@ -45,7 +45,7 @@ frames = [go.Frame(
                     go.Choropleth(z=disaster_data["".join(['F',str(year)])], colorscale='Reds')
                 ],
                 traces=[0,1,2]
-            ) for year in range(1980, 2022)]
+            ) for year in range(1960, 2022)]
 
 # Parameters to define function of button
 updatemenus = [dict(type='buttons',
@@ -67,7 +67,7 @@ sliders = [{'xanchor': 'left',
             [
             {'args': [[year], {'frame': {'duration': 2.0,  'redraw': True},'transition': {'duration': 0}}], 
             'label': year, 
-            'method': 'animate'} for year in range(1980, 2022)       
+            'method': 'animate'} for year in range(1960, 2022)       
             ]
             }]
 
