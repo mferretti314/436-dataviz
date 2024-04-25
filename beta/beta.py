@@ -45,28 +45,46 @@ annual_data.replace(0, '', inplace=True)
 
 
 # add first trace to figure [trace 0]
-figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data['1961'], colorscale='Greys' ), row=1, col=1)
+figure.add_trace(go.Choropleth(locations=annual_data['iso_code'], z=annual_data['1961'], colorscale=['#ADD8E6', '#98FB98', '#FFA500', '#FF4500', '#E2725B'] ), row=1, col=1)
 
 # add trace to figure [trace 1]
-figure.add_trace(go.Choropleth(locations=all_data['iso_code'], z=all_data['1961'], colorscale='deep'), row=1, col=2)
+figure.add_trace(go.Choropleth(locations=all_data['iso_code'], z=all_data['1961'], colorscale=['#ADD8E6', '#98FB98', '#FFA500', '#FF4500', '#E2725B']), row=1, col=2)
 
 # add ftrace to figure [trace 2]
 figure.add_trace(go.Choropleth(locations=disaster_data['ISO3'], z=disaster_data['1961'], colorscale='Reds', zmin=0), row=1, col=3)
 
 #placeholders
 # add trace to figure [trace 3]
-figure.add_trace(go.Choropleth(locations=per_capita['iso_code'], z=per_capita['1961'], colorscale='Reds', zmin=0, zmax=25), row=2, col=1)
+figure.add_trace(go.Choropleth(locations=per_capita['iso_code'], z=per_capita['1961'], colorscale=['#E6E6FA', '#87CEEB', '#FFDAB9', '#FA8072', '#E2725B'], zmin=0, zmax=25), row=2, col=1)
 
 # add trace to figure [trace 4]
-figure.add_trace(go.Choropleth(locations=per_capita_cumulative['iso_code'], z=per_capita_cumulative['1961'], colorscale='Reds' ), row=2, col=2)
+figure.add_trace(go.Choropleth(locations=per_capita_cumulative['iso_code'], z=per_capita_cumulative['1961'], colorscale=['#E6E6FA', '#87CEEB', '#FFDAB9', '#FA8072', '#E2725B'] ), row=2, col=2)
 
 # add trace to figure [trace 5]
-figure.add_trace(go.Choropleth(locations=temp_data['ISO3'], z=temp_data['1961'], colorscale='RdBu_r', zmin=-2.5, zmax=2.5), row=2, col=3)
+figure.add_trace(go.Choropleth(locations=temp_data['ISO3'], z=temp_data['1961'], colorscale=['#B0E0E6', '#008080', '#40E0D0', '#FF6B6B', '#CC5500'], zmin=-2.5, zmax=2.5), row=2, col=3)
+
+
+# COLOR SCALES:
+#--------------------------------------------------------------------------------------------
+#ocean breeze
+#color_continuous_scale=['#B0E0E6', '#008080', '#40E0D0', '#FF6B6B', '#CC5500']
+
+#sunset glow
+#color_continuous_scale=['#E6E6FA', '#87CEEB', '#FFDAB9', '#FA8072', '#E2725B']
+
+#glacier melt
+#color_continuous_scale=['#ADD8E6', '#98FB98', '#FFA500', '#FF4500', '#E2725B']
+#---------------------------------------------------------------------------------------------
+
 
 
 # TODO
 # 1- limit per capita this year scale to 40
 # 2- limit temperature anomaly scale
+
+
+
+
 # position color scales them below thier respective graph
 figure.data[0].colorbar.x=0.15
 figure.data[1].colorbar.x=0.5
@@ -108,12 +126,12 @@ for i in range(0,6):
 frames = [go.Frame(
                 name=year,
                 data=[
-                    go.Choropleth(z=annual_data[str(year)], colorscale='Greys'),
-                    go.Choropleth(z=all_data[str(year)], colorscale='deep'),
+                    go.Choropleth(z=annual_data[str(year)], colorscale=['#ADD8E6', '#98FB98', '#FFA500', '#FF4500', '#E2725B']),
+                    go.Choropleth(z=all_data[str(year)], colorscale=['#ADD8E6', '#98FB98', '#FFA500', '#FF4500', '#E2725B']),
                     go.Choropleth(z=disaster_data[str(year)], colorscale='Reds', zmin=0),
-                    go.Choropleth(z=per_capita[str(year)], colorscale='Reds', zmin=0, zmax=25),
-                    go.Choropleth(z=per_capita_cumulative[str(year)], colorscale='Reds'),
-                    go.Choropleth(z=temp_data[str(year)], colorscale='RdBu_r', zmin=-2.5, zmax=2.5)
+                    go.Choropleth(z=per_capita[str(year)], colorscale=['#E6E6FA', '#87CEEB', '#FFDAB9', '#FA8072', '#E2725B'], zmin=0, zmax=25),
+                    go.Choropleth(z=per_capita_cumulative[str(year)], colorscale=['#E6E6FA', '#87CEEB', '#FFDAB9', '#FA8072', '#E2725B']),
+                    go.Choropleth(z=temp_data[str(year)], colorscale=['#B0E0E6', '#008080', '#40E0D0', '#FF6B6B', '#CC5500'], zmin=-2.5, zmax=2.5)
                 ],
                 traces=[0,1,2,3,4,5]
             ) for year in range(1961, 2022)]
