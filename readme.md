@@ -1,4 +1,8 @@
 # Team 5 Project - Climate Change
-- /datasets - datasets are here
-- /phase 3/sketches - your sketches go here
-- /phase 3/artifacts - our code goes here 
+
+## Instructions
+Downloading: just clone the repo or download the source.
+Setting up:
+- You will need to install the latest version of Python (3.10 or later should work)
+- Run `pip install numpy plotly pandas`
+- Run `python /beta/beta.py` to display the web page.
