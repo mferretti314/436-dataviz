@@ -64,18 +64,6 @@ figure.add_trace(go.Choropleth(locations=per_capita_cumulative['iso_code'], z=pe
 figure.add_trace(go.Choropleth(locations=temp_data['ISO3'], z=temp_data['1961'], colorscale=['#008080', '#40E0D0', '#d3d3d3' , '#FF6B6B', '#CC5500'], zmin=-2.5, zmax=2.5), row=2, col=3)
 
 
-# COLOR SCALES:
-#--------------------------------------------------------------------------------------------
-#ocean breeze
-#color_continuous_scale=['#008080', '#40E0D0', '#d3d3d3' , '#FF6B6B', '#CC5500']
-
-#sunset glow
-#color_continuous_scale=['#E6E6FA', '#87CEEB', '#FFDAB9', '#FA8072', '#E2725B']
-
-#glacier melt
-#color_continuous_scale=['#ADD8E6', '#98FB98', '#FFA500', '#FF4500', '#E2725B']
-#---------------------------------------------------------------------------------------------
-
 
 
 # TODO
@@ -172,9 +160,8 @@ figure.frames = frames
 figure.update_layout(updatemenus=updatemenus,sliders=sliders)
 
 
-
-
-
+figure.update_layout(title = dict(text="Climate Change Causes and Effects Over Time", font=dict(size=30), automargin=True, x=0.3, y=0.985))
+figure.add_annotation(x=0.5, y=1.09, text="[Data after 2022 is Predicted from Previous Years]", font=dict(size=14), showarrow=False)
 
 
 # Render figure
