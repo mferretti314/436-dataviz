@@ -33,12 +33,12 @@ figure = make_subplots(rows=2, cols=3, specs=[[{'type': 'choropleth'},{'type': '
                                        'Temperature Anomaly This Year<br><sup>Measured in degrees celsius above baseline.</sup>'))
 
 # Read in all data from csv files
-all_data = pd.read_csv('co2_cumulative_data.csv')
-annual_data = pd.read_csv('co2_annual_data.csv')
-disaster_data = pd.read_csv('disasters_cumulative.csv')
-temp_data = pd.read_csv('temperature_anomaly_annual.csv')
-per_capita = pd.read_csv('co2_per_capita_data.csv')
-per_capita_cumulative = pd.read_csv('co2_per_capita_cumulative_data.csv')
+all_data = pd.read_csv('co2_cumulative_data_p.csv')
+annual_data = pd.read_csv('co2_annual_data_p.csv')
+disaster_data = pd.read_csv('disasters_cumulative_p.csv')
+temp_data = pd.read_csv('temperature_anomaly_annual_p.csv')
+per_capita = pd.read_csv('co2_per_capita_data_p.csv')
+per_capita_cumulative = pd.read_csv('co2_per_capita_cumulative_data_p.csv')
 
 disaster_data.replace(0, '', inplace=True)
 annual_data.replace(0, '', inplace=True)
@@ -121,7 +121,7 @@ frames = [go.Frame(
                     go.Choropleth(z=temp_data[str(year)], colorscale=['#008080', '#40E0D0', '#d3d3d3' , '#FF6B6B', '#CC5500'], zmin=-2.5, zmax=2.5)
                 ],
                 traces=[0,1,2,3,4,5]
-            ) for year in range(1961, 2022)]
+            ) for year in range(1961, 2041)]
 
 # Parameters to define function of button
 updatemenus = [dict(type='buttons', y= -0.05, x= -0.02,
@@ -143,7 +143,7 @@ sliders = [{'xanchor': 'left',
             [
             {'args': [[year], {'frame': {'duration': 2.0,  'redraw': True},'transition': {'duration': 0}}], 
             'label': year, 
-            'method': 'animate'} for year in range(1960, 2022)       
+            'method': 'animate'} for year in range(1960, 2040)       
             ]
             }]
 
@@ -161,7 +161,7 @@ figure.update_layout(updatemenus=updatemenus,sliders=sliders)
 
 
 figure.update_layout(title = dict(text="Climate Change Causes and Effects Over Time", font=dict(size=30), automargin=True, x=0.3, y=0.985))
-figure.add_annotation(x=0.5, y=1.09, text="[Data after 2022 is Predicted from Previous Years]", font=dict(size=14), showarrow=False)
+figure.add_annotation(x=0.5, y=1.09, text="Data after 2022 is predicted from previous years.", font=dict(size=14), showarrow=False)
 
 
 # Render figure
