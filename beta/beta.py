@@ -27,10 +27,10 @@ import pandas as pd
 figure = make_subplots(rows=2, cols=3, specs=[[{'type': 'choropleth'},{'type': 'choropleth'},{'type': 'choropleth'}],[{'type': 'choropleth'},{'type': 'choropleth'},{'type': 'choropleth'}]], 
                        subplot_titles=('CO2 Emitted This Year<br><sup>Measured in millions of tons of CO2.</sup>',
                                        'Cumulative CO2 Emitted<br><sup>Measured in millions of tons of CO2.</sup>',
-                                       'Climate Disasters Since 1980',
+                                       'Climate Disasters Since 1980<br><sup>Drought, Extreme temperature, Flood, etc.</sup>',
                                        'CO2 Emitted This Year Per Capita<br><sup>Measured in tons of CO2 per person.</sup>',
                                        'Cumulative CO2 Emitted Per Capita<br><sup>Measured in tons of CO2 emitted per person since 1980.</sup>',
-                                       'Temperature Anomaly This Year<br><sup>Measured in degrees celsius above baseline.</sup>'))
+                                       'Temperature Anomaly This Year<br><sup>Measured in degrees celsius above baseline.</sup>'), vertical_spacing = 0.06)
 
 # Read in all data from csv files
 all_data = pd.read_csv('co2_cumulative_data_p.csv')
@@ -81,12 +81,14 @@ figure.data[3].colorbar.x=0.15
 figure.data[4].colorbar.x=0.5
 figure.data[5].colorbar.x=0.85
 
-figure.data[0].colorbar.y=0.59
-figure.data[1].colorbar.y=0.59
-figure.data[2].colorbar.y=0.59
-figure.data[3].colorbar.y=-0.04
-figure.data[4].colorbar.y=-0.04
-figure.data[5].colorbar.y=-0.04
+row1Height = 0.50
+row2Height = -0.03
+figure.data[0].colorbar.y=row1Height
+figure.data[1].colorbar.y=row1Height
+figure.data[2].colorbar.y=row1Height
+figure.data[3].colorbar.y=row2Height
+figure.data[4].colorbar.y=row2Height
+figure.data[5].colorbar.y=row2Height
 
 # flip color scales horizontally 
 for i in range(0,6):
@@ -160,12 +162,18 @@ figure.frames = frames
 figure.update_layout(updatemenus=updatemenus,sliders=sliders)
 
 
-figure.update_layout(title = dict(text="Climate Change Causes and Effects Over Time", font=dict(size=30), automargin=True, x=0.3, y=0.985))
-figure.add_annotation(x=0.5, y=1.09, text="Data after 2022 is predicted from previous years.", font=dict(size=14), showarrow=False)
+figure.update_layout(title = dict(text="Climate Change and You", font=dict(size=30), automargin=True, x=0.5, y=0.985))
+
+figure.update_annotations(yshift=-29)
+
+figure.add_annotation(x=0.5, y=1.11, text="Pan and zoom across these maps to view various atmospheric indicators of climate across the world", font=dict(size=14), showarrow=False)
+figure.add_annotation(x=0.5, y=1.08, text="You may choose the year viewed via the slider, or click Play to see a full timelapse", font=dict(size=14), showarrow=False)
+figure.add_annotation(x=0.5, y=1.05, text="(Data after 2022 is predicted based on previous years)", font=dict(size=14), showarrow=False)
 
 
 # Render figure
 figure.show()
+figure.write_html("output.html")
 
 
 
